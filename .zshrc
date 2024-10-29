@@ -157,14 +157,14 @@ _fzf_compgen_dir() {
 }
 
 # --- setup fzf theme ---
-fg="#CBE0F0"
-bg="#011628"
-bg_highlight="#143652"
-purple="#B388FF"
-blue="#06BCE4"
-cyan="#2CF9ED"
+fg="#C9D1D9"
+bg="#0D1117"
+bg_highlight="#161B22"
+hl="#D2A8FF"
+blue="#58A6FF"
+cyan="#56D4DD"
 
-export FZF_DEFAULT_OPTS="--color=fg:${fg},bg:${bg},hl:${purple},fg+:${fg},bg+:${bg_highlight},hl+:${purple},info:${blue},prompt:${cyan},pointer:${cyan},marker:${cyan},spinner:${cyan},header:${cyan}"
+export FZF_DEFAULT_OPTS="--color=fg:${fg},bg:${bg},hl:${hl},fg+:${fg},bg+:${bg_highlight},hl+:${hl},info:${blue},prompt:${cyan},pointer:${cyan},marker:${cyan},spinner:${cyan},header:${cyan}"
 
 # ----- Bat (better cat) -----
 
@@ -172,3 +172,13 @@ export BAT_THEME=tokyonight_night
 
 # ----- doftiles alias -----
 alias config='/opt/homebrew/bin/git --git-dir=/Users/chriswren/dotfiles --work-tree=/Users/chriswren'
+
+# ----- Go Path ------
+
+export GOPATH=/usr/local/go
+export GOROOT=$HOME/go
+export PATH=$PATH:$GOPATH/bin
+export PATH=$PATH:$GOROOT/bin
+
+# ----- Zig -------
+export PATH="/usr/local/zig:$PATH" 
