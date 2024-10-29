@@ -19,6 +19,10 @@ config.font_size = 19
 
 -- config.enable_tab_bar = false
 
+-- How many lines of scrollback you want to retain per tab
+config.scrollback_lines = 3500
+config.enable_scroll_bar = true
+
 config.window_decorations = "RESIZE"
 
 -- config.window_background_opacity = 0.8
