@@ -130,7 +130,6 @@ return {
 					},
 				})
 			end,
-
 			["graphql"] = function()
 				-- configure graphql language server
 				lspconfig["graphql"].setup({
