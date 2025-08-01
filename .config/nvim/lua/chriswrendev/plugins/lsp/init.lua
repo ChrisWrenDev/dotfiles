@@ -38,9 +38,9 @@ return {
                     nls.builtins.formatting.prettierd.with({
                         disabled_filetypes = { "markdown", "yaml", "html" },
                     }),
-                    -- nls.builtins.formatting.sql_formatter.with({
-                    --     command = { "sleek" },
-                    -- }),
+                    nls.builtins.formatting.rustfmt,
+                    nls.builtins.formatting.sql_formatter,
+                    -- nls.builtins.formatting.pg_format,  -- For PostgreSQL-specific
                 },
             })
         end,

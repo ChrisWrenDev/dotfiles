@@ -26,6 +26,7 @@ return {
                 "java",
                 "javascript",
                 "json",
+                "jsonc",
                 "llvm",
                 "lua",
                 "make",
