@@ -66,7 +66,7 @@ export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || pr
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh" # This loads nvm
 
 export PATH=$PATH:/usr/local/go/bin
-export PATH="$PATH:/opt/nvim/"
+export PATH="$PATH:/opt/nvim/bin/"
 
 
 if [ -d "$HOME/.local/bin" ] ;
@@ -162,3 +162,28 @@ eval "$(starship init zsh)"
 #autostart
 # $HOME/.local/bin/colorscript -r
 
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+
+export PATH=/home/chriswrendev/.tiup/bin:$PATH
+
+# sccache
+export RUSTC_WRAPPER=$(command -v sccache)
+
+# Target + cache directories
+export RUSTUP_HOME=$HOME/rust-dev-cache/rustup
+
+export CARGO_HOME=$HOME/rust-dev-cache/cargo
+export CARGO_TARGET_DIR=$HOME/rust-dev-cache/target
+
+export SCCACHE_DIR=$HOME/rust-dev-cache/sccache
+export SCCACHE_CACHE_SIZE=50G
+
+# export CARGO_TARGET_DIR=/mnt/ssd/rust-dev-cache/target
+# export SCCACHE_DIR=/mnt/ssd/rust-dev-cache/sccache
+
+# bun completions
+[ -s "/home/chriswrendev/.bun/_bun" ] && source "/home/chriswrendev/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
