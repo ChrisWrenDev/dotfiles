@@ -15,7 +15,7 @@ return {
             { icon = " ", key = "q", desc = "Quit", action = ":qa" },
         },
         header = [[
-                
+
 ███╗   ██╗███████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗
 ████╗  ██║██╔════╝██╔═══██╗██║   ██║██║████╗ ████║
 ██╔██╗ ██║█████╗  ██║   ██║██║   ██║██║██╔████╔██║
@@ -29,7 +29,7 @@ return {
     },
     sections = {
         { section = "header" },
-        { section = "keys", gap = 1, padding = 1 },
+        { section = "keys",   gap = 1, padding = 1 },
         { section = "startup" },
     },
 }

@@ -26,8 +26,8 @@ map("n", "<leader><ESC>", "<cmd>qa<CR>", opts)
 map("n", "<C-s>", "<cmd>w<CR>", { desc = "general save file" })
 
 -- move code up and down
-map("n", "<M-j>", ":m+<CR>", opts) -- move line down
-map("n", "<M-k>", ":m-2<CR>", opts) -- move line up
+map("n", "<M-j>", ":m+<CR>", opts)          -- move line down
+map("n", "<M-k>", ":m-2<CR>", opts)         -- move line up
 map("x", "<M-j>", ":m '>+1<CR>gv=gv", opts) -- move code block down
 map("x", "<M-k>", ":m '<-2<CR>gv=gv", opts) -- move code block up
 
@@ -37,7 +37,7 @@ map("x", ">", ">gv", opts)
 
 -- formatting
 map("n", "<leader>fm", function()
-  require("conform").format { lsp_fallback = true }
+    require("conform").format { lsp_fallback = true }
 end, { desc = "general format file" })
 
 -- buffer
@@ -55,10 +55,10 @@ map("n", "x", [["_x]], opts)
 map("x", "p", [["_dP]], opts)
 map("v", "<backspace>", '"_d', opts)
 map("n", "<backspace>", '"_dh', opts)
-map("n", "<leader>Y", [["+Y]], opts) -- copy current line to system clipboard
-map("n", "<leader>vp", "`[v`]", opts) -- reselect pasted text
+map("n", "<leader>Y", [["+Y]], opts)               -- copy current line to system clipboard
+map("n", "<leader>vp", "`[v`]", opts)              -- reselect pasted text
 map({ "n", "x", "v" }, "<leader>y", [["+y]], opts) -- copy to system clipboard
-map({ "n", "x" }, "<leader>p", [["+p]], opts) -- paste from system clipboard
+map({ "n", "x" }, "<leader>p", [["+p]], opts)      -- paste from system clipboard
 map("n", "YY", "va{Vy", opts)
 
 -- copy to clipboard
@@ -98,10 +98,10 @@ map("n", "<leader>fo", "<cmd>Telescope oldfiles<CR>", { desc = "telescope find o
 map("n", "<leader>fz", "<cmd>Telescope current_buffer_fuzzy_find<CR>", { desc = "telescope find in current buffer" })
 map("n", "<leader>ff", "<cmd>Telescope find_files<cr>", { desc = "telescope find files" })
 map(
-  "n",
-  "<leader>fa",
-  "<cmd>Telescope find_files follow=true no_ignore=true hidden=true<CR>",
-  { desc = "telescope find all files" }
+    "n",
+    "<leader>fa",
+    "<cmd>Telescope find_files follow=true no_ignore=true hidden=true<CR>",
+    { desc = "telescope find all files" }
 )
 
 map("n", "<leader>gc", "<cmd>Telescope git_commits<CR>", { desc = "telescope git commits" })
@@ -112,5 +112,14 @@ map("n", "<leader>pt", "<cmd>Telescope terms<CR>", { desc = "telescope pick hidd
 map("n", "<leader>wK", "<cmd>WhichKey <CR>", { desc = "whichkey all keymaps" })
 
 map("n", "<leader>wk", function()
-  vim.cmd("WhichKey " .. vim.fn.input "WhichKey: ")
+    vim.cmd("WhichKey " .. vim.fn.input "WhichKey: ")
 end, { desc = "whichkey query lookup" })
+
+-- rust analyzer
+-- vim.keymap.set("n", "<leader>raf", function()
+--   require("chriswrendev.utils.ra_toggle").fast()
+-- end, { desc = "Rust Analyzer: fast mode" })
+--
+-- vim.keymap.set("n", "<leader>rau", function()
+--   require("chriswrendev.utils.ra_toggle").full()
+-- end, { desc = "Rust Analyzer: full (macros)" })

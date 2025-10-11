@@ -32,7 +32,8 @@ set.timeoutlen = 300
 -- Better completion experience
 set.completeopt = "menuone,noselect"
 
-set.wrap = false
+set.wrap = true
+set.linebreak = true
 set.list = false
 set.smartindent = true
 set.termguicolors = true

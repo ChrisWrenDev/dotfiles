@@ -6,8 +6,8 @@ return {
         },
     },
     {
-  "folke/which-key.nvim",
-  event = "VeryLazy",
-  opts = {},
-}
+        "folke/which-key.nvim",
+        event = "VeryLazy",
+        opts = {},
+    }
 }

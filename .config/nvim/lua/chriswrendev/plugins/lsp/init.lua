@@ -8,10 +8,37 @@ return {
     {
         "neovim/nvim-lspconfig",
         dependencies = {
+
+            {
+                "williamboman/mason.nvim",
+                config = function()
+                    require("mason").setup({ PATH = "append" })
+                end,
+            },
+
+            "williamboman/mason-lspconfig.nvim",
+            -- Auto-install NON-LSP tools (formatters/linters) on start
+            {
+                "WhoIsSethDaniel/mason-tool-installer.nvim",
+                config = function()
+                    require("mason-tool-installer").setup({
+                        ensure_installed = {
+                            -- formatters/linters you’re using
+                            "stylua",
+                            "prettierd", "prettier",
+                            "black", "isort",
+                            "goimports", "gofumpt",
+                            -- add more if you use them: "ruff", "eslint_d", "shfmt", "shellcheck", etc.
+                        },
+                        run_on_start = true,
+                        start_delay = 3000, -- let mason init first
+                        auto_update = false,
+                        debounce_hours = 5,
+                    })
+                end,
+            },
             "saghen/blink.cmp",
             "RRethy/vim-illuminate",
-            "williamboman/mason-lspconfig.nvim",
-            { "williamboman/mason.nvim", config = true },
         },
         event = "BufReadPre",
         config = function()
@@ -28,19 +55,21 @@ return {
         event = "LspAttach",
         config = function()
             local nls = require("null-ls")
+            -- local formatting = nls.builtins.formatting
+            local diagnostics = nls.builtins.diagnostics
+
             nls.setup({
                 debug = false,
                 sources = {
-                    nls.builtins.formatting.stylua,
-                    nls.builtins.diagnostics.yamllint.with({
+                    diagnostics.yamllint.with({
                         args = require("chriswrendev.plugins.lsp.lang.yamllint"),
                     }),
-                    nls.builtins.formatting.prettierd.with({
-                        disabled_filetypes = { "markdown", "yaml", "html" },
-                    }),
-                    nls.builtins.formatting.rustfmt,
-                    nls.builtins.formatting.sql_formatter,
-                    -- nls.builtins.formatting.pg_format,  -- For PostgreSQL-specific
+                    -- formatting.stylua,
+                    -- formatting.prettierd.with({
+                    --     disabled_filetypes = { "markdown", "yaml", "html" },
+                    -- }),
+                    -- formatting.sql_formatter,
+                    -- formatting.pg_format,  -- For PostgreSQL-specific
                 },
             })
         end,

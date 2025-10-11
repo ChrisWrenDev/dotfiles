@@ -8,6 +8,9 @@ return {
             ts_config = {
                 lua = { "string", "source" },
                 javascript = { "string", "template_string" },
+                typescript = { "string", "template_string" },
+                javascriptreact = { "string", "template_string" },
+                typescriptreact = { "string", "template_string" },
                 java = false,
             },
             fast_wrap = {

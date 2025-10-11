@@ -14,28 +14,21 @@ local servers = {
     yamlls = lang.yaml,
     rust_analyzer = lang.rust,
     terraformls = { filetypes = { "terraform", "tf" } },
+    html = {},
+    tailwindcss = { filetypes = { "typescriptreact", "javascriptreact", "css" } },
+    prismals = {},
+    graphql = { filetypes = { "graphql", "gql" } },
 }
+
+for name, cfg in pairs(servers) do
+    vim.lsp.config(name, {
+        on_attach = opts.on_attach,
+        capabilities = opts.capabilities,
+        settings = cfg,
+        filetypes = cfg.filetypes, -- optional
+    })
+end
 
 mason_lspconfig.setup({
     ensure_installed = vim.tbl_keys(servers),
 })
-
-mason_lspconfig.setup_handlers({
-    function(server_name)
-        lspconfig[server_name].setup({
-            on_attach = opts.on_attach,
-            capabilities = opts.capabilities,
-            settings = servers[server_name],
-            filetypes = (servers[server_name] or {}).filetypes,
-        })
-    end,
-})
-
--- lspconfig.clangd.setup({
---     on_attach = opts.on_attach,
---     capabilities = opts.capabilities,
---     cmd = {
---         "clangd",
---         "--offset-encoding=utf-16",
---     },
--- })
