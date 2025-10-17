@@ -33,8 +33,8 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define RGBLIGHT_DISABLE_KEYCODES // Don’t use RGB toggle keys unless needed
 
 /* ========== Split Keyboard Options ========== */
-#define SPLIT_HAND_PIN D2         // Pin used to determine handedness (if needed)
-#define EE_HANDS                  // Store handedness in EEPROM
+// #define SPLIT_HAND_PIN D2         // Pin used to determine handedness (if needed)
+// #define EE_HANDS                  // Store handedness in EEPROM
 
 /* ========== Optional OLED or Encoder ========== */
 // #define OLED_ENABLE
