@@ -9,7 +9,13 @@ return {
         delete_to_trash = true,
         default_file_explorer = true,
         skip_confirm_for_simple_edits = true,
-        view_options = { show_hidden = true },
+        view_options = {
+            is_hidden_file = function(name, bufnr)
+                -- show everything except .git folder
+                return name == ".git"
+            end,
+            show_hidden = true
+        },
         keymaps = {
             ["<C-s>"] = false,
             ["<C-h>"] = false,
