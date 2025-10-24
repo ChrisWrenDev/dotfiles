@@ -31,6 +31,7 @@ return {
                 "lua",
                 "make",
                 "markdown",
+                "mojo",
                 "prisma",
                 "proto",
                 "python",

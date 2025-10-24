@@ -9,21 +9,33 @@ return {
         delete_to_trash = true,
         default_file_explorer = true,
         skip_confirm_for_simple_edits = true,
+        watch_for_changes = true,
         view_options = {
-            is_hidden_file = function(name, bufnr)
-                -- show everything except .git folder
-                return name == ".git"
+            is_always_hidden = function(name, bufnr)
+                return name == ".."
             end,
-            show_hidden = true
+            show_hidden = true,
         },
         keymaps = {
-            ["<C-s>"] = false,
-            ["<C-h>"] = false,
-            ["<C-l>"] = false,
-            ["<A-d>"] = "actions.close",
-            ["<A-w>"] = "actions.preview",
-            ["<C-x>"] = "actions.select_split",
-            ["<C-v>"] = "actions.select_vsplit",
+            ["g?"] = "actions.show_help",
+            ["<CR>"] = "actions.select",
+            ["l"] = "actions.select",
+            ["<C-k>"] = "actions.select_vsplit",
+            ["<C-j>"] = "actions.select_split",
+            ["<C-t>"] = "actions.select_tab",
+            ["<C-p>"] = "actions.preview",
+            ["<C-c>"] = "actions.close",
+            ["q"] = "actions.close",
+            ["esc"] = "actions.close",
+            ["r"] = "actions.refresh",
+            ["h"] = "actions.parent",
+            ["_"] = "actions.open_cwd",
+            ["`"] = "actions.cd",
+            ["~"] = "actions.tcd",
+            ["gs"] = "actions.change_sort",
+            ["gx"] = "actions.open_external",
+            ["."] = "actions.toggle_hidden",
+            ["g\\"] = "actions.toggle_trash",
         },
     },
 }

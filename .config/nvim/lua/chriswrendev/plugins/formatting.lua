@@ -7,22 +7,26 @@ return {
 
         conform.setup({
             formatters_by_ft = {
-                javascript      = { "prettierd", "prettier" },
-                typescript      = { "prettierd", "prettier" },
-                javascriptreact = { "prettierd", "prettier" },
-                typescriptreact = { "prettierd", "prettier" }, -- <-- add prettier fallback
-                svelte          = { "prettierd", "prettier" },
-                css             = { "prettierd", "prettier" },
-                html            = { "prettierd", "prettier" },
-                json            = { "prettierd", "prettier" },
-                yaml            = { "prettierd", "prettier" },
-                markdown        = { "prettierd", "prettier" },
-                graphql         = { "prettierd", "prettier" },
-                lua             = { "stylua" },
-                terraform       = { "terraform_fmt" },
-                python          = { "isort", "black" }, -- optionally: "ruff_format"
-                rust            = { "rustfmt" },
-                go              = { "goimports", "gofumpt" },
+                javascript = { "prettier" },
+                typescript = { "prettier" },
+                javascriptreact = { "prettier" },
+                typescriptreact = { "prettier" },
+                css = { "prettier" },
+                html = { "prettier" },
+                json = { "prettier" },
+                yaml = { "prettier" },
+                markdown = { "prettier" },
+                graphql = { "prettier" },
+                lua = { "stylua" },
+                terraform = { "terraform_fmt" },
+                python = { "isort", "black" }, -- optionally: "ruff_format"
+                rust = { "rustfmt" },
+                go = { "goimports", "gofumpt" },
+            },
+            format_on_save = {
+                lsp_fallback = true,
+                async = false,
+                timeout_ms = 3000,
             },
         })
 

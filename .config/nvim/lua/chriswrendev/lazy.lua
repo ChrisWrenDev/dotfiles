@@ -10,7 +10,8 @@ if not vim.loop.fs_stat(lazypath) then
     })
 end
 
-vim.opt.rtp:prepend(lazypath)
+-- add Lazy to neovim runtime path
+vim.opt.runtimepath:prepend(lazypath)
 
 local plugins = {
     { import = "chriswrendev.plugins" },

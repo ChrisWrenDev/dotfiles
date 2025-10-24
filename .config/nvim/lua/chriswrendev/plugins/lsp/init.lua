@@ -25,9 +25,11 @@ return {
                         ensure_installed = {
                             -- formatters/linters you’re using
                             "stylua",
-                            "prettierd", "prettier",
-                            "black", "isort",
-                            "goimports", "gofumpt",
+                            "prettier",
+                            "black",
+                            "isort",
+                            "goimports",
+                            "gofumpt",
                             -- add more if you use them: "ruff", "eslint_d", "shfmt", "shellcheck", etc.
                         },
                         run_on_start = true,
