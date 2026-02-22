@@ -1,0 +1,54 @@
+[
+  // Terminal
+  { "key": "ctrl+t", "command": "workbench.action.togglePanel" },
+  {
+    "key": "ctrl+j",
+    "command": "workbench.action.terminal.focusNext",
+    "when": "terminalFocus"
+  },
+  {
+    "key": "ctrl+k",
+    "command": "workbench.action.terminal.focusPrevious",
+    "when": "terminalFocus"
+  },
+  {
+    "key": "ctrl+n",
+    "command": "workbench.action.terminal.new",
+    "when": "terminalFocus"
+  },
+  {
+    "key": "ctrl+q",
+    "command": "workbench.action.terminal.kill",
+    "when": "terminalFocus"
+  },
+  // File Explorer
+  {
+    "command": "workbench.action.toggleSidebarVisibility",
+    "key": "ctrl+e"
+  },
+  {
+    "command": "workbench.files.action.focusFilesExplorer",
+    "key": "ctrl+e",
+    "when": "editorTextFocus"
+  },
+  {
+    "key": "n",
+    "command": "explorer.newFile",
+    "when": "filesExplorerFocus && !inputFocus"
+  },
+  {
+    "command": "renameFile",
+    "key": "r",
+    "when": "filesExplorerFocus && !inputFocus"
+  },
+  {
+    "command": "deleteFile",
+    "key": "d",
+    "when": "filesExplorerFocus && !inputFocus"
+  },
+  {
+    "command": "explorer.newFolder",
+    "key": "shift+n",
+    "when": "explorerViewletFocus"
+  }
+]
