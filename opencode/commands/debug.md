@@ -1,14 +1,15 @@
 ---
-description: Debug issues by investigating logs, database state, and git history
+description: Debug issues by investigating logs, git state, and environment
 ---
 
 # Debug
 
-You are tasked with helping debug issues during manual testing or implementation. This command allows you to investigate problems by examining logs, database state, and git history without editing files. Think of this as a way to bootstrap a debugging session without using the primary window's context.
+You are tasked with helping debug issues during manual testing or implementation. This command allows you to investigate problems by examining git state, environment, and running diagnostic commands.
 
 ## Initial Response
 
 When invoked WITH a plan/ticket file:
+
 ```
 I'll help debug issues with [file name]. Let me understand the current state.
 
@@ -17,10 +18,11 @@ What specific problem are you encountering?
 - What went wrong?
 - Any error messages?
 
-I'll investigate the logs, database, and git state to help figure out what's happening.
+I'll investigate the logs, git state, and environment to help figure out what's happening.
 ```
 
 When invoked WITHOUT parameters:
+
 ```
 I'll help debug your current issue.
 
@@ -29,31 +31,34 @@ Please describe what's going wrong:
 - What specific problem occurred?
 - When did it last work?
 
-I can investigate logs, database state, and recent changes to help identify the issue.
+I can investigate git state, recent changes, and run diagnostics to help identify the issue.
 ```
 
 ## Environment Information
 
-You have access to these key locations and tools:
-
-**Logs** (automatically created by `make daemon` and `make wui`):
-- MCP logs: `~/.humanlayer/logs/mcp-claude-approvals-*.log`
-- Combined WUI/Daemon logs: `~/.humanlayer/logs/wui-${BRANCH_NAME}/codelayer.log`
-- First line shows: `[timestamp] starting [service] in [directory]`
-
-**Database**:
-- Location: `~/.humanlayer/daemon-{BRANCH_NAME}.db`
-- SQLite database with sessions, events, approvals, etc.
-- Can query directly with `sqlite3`
+You have access to these key tools and locations:
 
 **Git State**:
-- Check current branch, recent commits, uncommitted changes
-- Similar to how `commit` and `describe_pr` commands work
 
-**Service Status**:
-- Check if daemon is running: `ps aux | grep hld`
-- Check if WUI is running: `ps aux | grep wui`
-- Socket exists: `~/.humanlayer/daemon.sock`
+- Check current branch, recent commits, uncommitted changes
+- View diff of recent modifications
+- Check worktree status
+
+**Build/Test Output**:
+
+- Run `make check` or `make test` to see failures
+- Check for compilation errors
+- View test output
+
+**Process State**:
+
+- Check if services are running: `ps aux | grep <service>`
+- Check network ports: `lsof -i :<port>` or `ss -tlnp`
+
+**Logs** (project-specific):
+
+- Check common log locations based on project type
+- Look for error patterns in recent output
 
 ## Process Steps
 
@@ -76,31 +81,7 @@ After the user describes the issue:
 Spawn parallel Task agents for efficient investigation:
 
 ```
-Task 1 - Check Recent Logs:
-Find and analyze the most recent logs for errors:
-1. Find latest daemon log: ls -t ~/.humanlayer/logs/daemon-*.log | head -1
-2. Find latest WUI log: ls -t ~/.humanlayer/logs/wui-*.log | head -1
-3. Search for errors, warnings, or issues around the problem timeframe
-4. Note the working directory (first line of log)
-5. Look for stack traces or repeated errors
-Return: Key errors/warnings with timestamps
-```
-
-```
-Task 2 - Database State:
-Check the current database state:
-1. Connect to database: sqlite3 ~/.humanlayer/daemon.db
-2. Check schema: .tables and .schema for relevant tables
-3. Query recent data:
-   - SELECT * FROM sessions ORDER BY created_at DESC LIMIT 5;
-   - SELECT * FROM conversation_events WHERE created_at > datetime('now', '-1 hour');
-   - Other queries based on the issue
-4. Look for stuck states or anomalies
-Return: Relevant database findings
-```
-
-```
-Task 3 - Git and File State:
+Task 1 - Check Git State:
 Understand what changed recently:
 1. Check git status and current branch
 2. Look at recent commits: git log --oneline -10
@@ -110,91 +91,120 @@ Understand what changed recently:
 Return: Git state and any file issues
 ```
 
+```
+Task 2 - Run Build/Test:
+Check if build and tests pass:
+1. Run the project's check/lint command (e.g., make check, npm run lint)
+2. Run the project's test command (e.g., make test, npm test)
+3. Note any failures or errors
+4. Check for type errors if TypeScript
+Return: Build/test results and any failures
+```
+
+```
+Task 3 - Check Environment:
+Verify environment is set up correctly:
+1. Check for required environment variables
+2. Verify dependencies are installed
+3. Check service status if applicable
+4. Look for configuration issues
+Return: Environment status and any issues
+```
+
 ### Step 3: Present Findings
 
 Based on the investigation, present a focused debug report:
 
-```markdown
+````markdown
 ## Debug Report
 
 ### What's Wrong
+
 [Clear statement of the issue based on evidence]
 
 ### Evidence Found
 
-**From Logs** (`~/.humanlayer/logs/`):
-- [Error/warning with timestamp]
-- [Pattern or repeated issue]
+**From Git**:
 
-**From Database**:
-```sql
--- Relevant query and result
-[Finding from database]
-```
-
-**From Git/Files**:
 - [Recent changes that might be related]
 - [File state issues]
 
+**From Build/Test**:
+
+- [Error messages or failures]
+- [Test results]
+
+**From Environment**:
+
+- [Configuration issues]
+- [Missing dependencies]
+
 ### Root Cause
+
 [Most likely explanation based on evidence]
 
-### Next Steps
+### Suggested Fix
 
 1. **Try This First**:
    ```bash
    [Specific command or action]
    ```
+````
 
 2. **If That Doesn't Work**:
-   - Restart services: `make daemon` and `make wui`
-   - Check browser console for WUI errors
-   - Run with debug: `HUMANLAYER_DEBUG=true make daemon`
+   - [Alternative approach]
+   - [Additional debugging steps]
 
 ### Can't Access?
+
 Some issues might be outside my reach:
+
 - Browser console errors (F12 in browser)
-- MCP server internal state
+- External service logs
 - System-level issues
 
 Would you like me to investigate something specific further?
-```
+
+````
 
 ## Important Notes
 
-- **Focus on manual testing scenarios** - This is for debugging during implementation
+- **Focus on the problem at hand** - This is for debugging during implementation
 - **Always require problem description** - Can't debug without knowing what's wrong
 - **Read files completely** - No limit/offset when reading context
-- **Think like `commit` or `describe_pr`** - Understand git state and changes
-- **Guide back to user** - Some issues (browser console, MCP internals) are outside reach
+- **Guide back to user** - Some issues (browser console, external services) are outside reach
 - **No file editing** - Pure investigation only
 
 ## Quick Reference
-
-**Find Latest Logs**:
-```bash
-ls -t ~/.humanlayer/logs/daemon-*.log | head -1
-ls -t ~/.humanlayer/logs/wui-*.log | head -1
-```
-
-**Database Queries**:
-```bash
-sqlite3 ~/.humanlayer/daemon.db ".tables"
-sqlite3 ~/.humanlayer/daemon.db ".schema sessions"
-sqlite3 ~/.humanlayer/daemon.db "SELECT * FROM sessions ORDER BY created_at DESC LIMIT 5;"
-```
-
-**Service Check**:
-```bash
-ps aux | grep hld     # Is daemon running?
-ps aux | grep wui     # Is WUI running?
-```
 
 **Git State**:
 ```bash
 git status
 git log --oneline -10
 git diff
+git branch -vv
+````
+
+**Build Check**:
+
+```bash
+make check        # or npm run lint, etc.
+make test         # or npm test, etc.
+make build        # or npm run build, etc.
 ```
 
-Remember: This command helps you investigate without burning the primary window's context. Perfect for when you hit an issue during manual testing and need to dig into logs, database, or git state.
+**Process Check**:
+
+```bash
+ps aux | grep <process>
+lsof -i :<port>
+```
+
+**Environment**:
+
+```bash
+env | grep <PREFIX>
+cat .env.example
+```
+
+Remember: This command helps you investigate without burning the primary window's context. Perfect for when you hit an issue during manual testing and need to dig into git state, build output, or environment.

@@ -10,9 +10,8 @@ You are tasked with generating a comprehensive pull request description followin
 
 1. **Read the PR description template:**
    - First, check if `thoughts/shared/pr_description.md` exists
-   - If it doesn't exist, inform the user that their `humanlayer thoughts` setup is incomplete and they need to create a PR description template at `thoughts/shared/pr_description.md`
+   - If it doesn't exist, inform the user that their thoughts setup is incomplete and they need to create a PR description template at `thoughts/shared/pr_description.md` (use `thoughts_init` tool if the directory doesn't exist)
    - Read the template carefully to understand all sections and requirements
-
 
 2. **Identify the PR to describe:**
    - Check if the current branch has an associated PR: `gh pr view --json url,number,title,state 2>/dev/null`
@@ -58,7 +57,7 @@ You are tasked with generating a comprehensive pull request description followin
 
 8. **Save and sync the description:**
    - Write the completed description to `thoughts/shared/prs/{number}_description.md`
-   - Run `humanlayer thoughts sync` to sync the thoughts directory
+   - Use the `thoughts_sync` tool to sync the thoughts directory
    - Show the user the generated description
 
 9. **Update the PR:**
@@ -67,6 +66,7 @@ You are tasked with generating a comprehensive pull request description followin
    - If any verification steps remain unchecked, remind the user to complete them before merging
 
 ## Important notes:
+
 - This command works across different repositories - always read the local template
 - Be thorough but concise - descriptions should be scannable
 - Focus on the "why" as much as the "what"

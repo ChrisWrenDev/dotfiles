@@ -18,6 +18,7 @@ When this command is invoked:
 2. **Handle different input scenarios**:
 
    **If NO plan file provided**:
+
    ```
    I'll help you iterate on an existing implementation plan.
 
@@ -25,9 +26,11 @@ When this command is invoked:
 
    Tip: You can list recent plans with `ls -lt thoughts/shared/plans/ | head`
    ```
+
    Wait for user input, then re-check for feedback.
 
    **If plan file provided but NO feedback**:
+
    ```
    I've found the plan at [path]. What changes would you like to make?
 
@@ -37,6 +40,7 @@ When this command is invoked:
    - "Adjust the scope to exclude feature X"
    - "Split Phase 2 into two separate phases"
    ```
+
    Wait for user input.
 
    **If BOTH plan file AND feedback provided**:
@@ -78,7 +82,7 @@ If the user's feedback requires understanding new code patterns or validating as
    - **thoughts-analyzer** - To extract insights from documents
 
    **Be EXTREMELY specific about directories**:
-   - If the change involves "WUI", specify `humanlayer-wui/` directory
+   - If the change involves "WUI", specify the exact frontend/WUI directory
    - If it involves "daemon", specify `hld/` directory
    - Include full path context in prompts
 
@@ -133,10 +137,11 @@ Get user confirmation before proceeding.
 ### Step 5: Sync and Review
 
 1. **Sync the updated plan**:
-   - Run `humanlayer thoughts sync`
+   - Use the `thoughts_sync` tool
    - This ensures changes are properly indexed
 
 2. **Present the changes made**:
+
    ```
    I've updated the plan at `thoughts/shared/plans/[filename].md`
 
@@ -196,7 +201,7 @@ When updating success criteria, always maintain the two-category structure:
 
 1. **Automated Verification** (can be run by execution agents):
    - Commands that can be run: `make test`, `npm run lint`, etc.
-   - Prefer `make` commands: `make -C humanlayer-wui check` instead of `cd humanlayer-wui && bun run fmt`
+   - Prefer `make` commands: `make -C <frontend-dir> check` instead of `cd <frontend-dir> && bun run fmt`
    - Specific files that should exist
    - Code compilation/type checking
 
@@ -225,12 +230,14 @@ When spawning research sub-tasks:
 ## Example Interaction Flows
 
 **Scenario 1: User provides everything upfront**
+
 ```
 User: /iterate_plan thoughts/shared/plans/2025-10-16-feature.md - add phase for error handling
 Assistant: [Reads plan, researches error handling patterns, updates plan]
 ```
 
 **Scenario 2: User provides just plan file**
+
 ```
 User: /iterate_plan thoughts/shared/plans/2025-10-16-feature.md
 Assistant: I've found the plan. What changes would you like to make?
@@ -239,6 +246,7 @@ Assistant: [Proceeds with update]
 ```
 
 **Scenario 3: User provides no arguments**
+
 ```
 User: /iterate_plan
 Assistant: Which plan would you like to update? Please provide the path...
