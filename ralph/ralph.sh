@@ -1,30 +1,115 @@
-set -e
+#!/bin/bash
+# Ralph Wiggum - Long-running AI agent loop
+# Usage: ./ralph.sh [max_iterations]
 
-if [ -z "$1" ]; then
-  echo "Usage: $0 <iterations>"
-  exit 1
+set -euo pipefail
+
+MAX_ITERATIONS=${1:-10}
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+PRD_FILE="$SCRIPT_DIR/prd.json"
+PROGRESS_FILE="$SCRIPT_DIR/progress.txt"
+ARCHIVE_DIR="$SCRIPT_DIR/archive"
+LAST_BRANCH_FILE="$SCRIPT_DIR/.last-branch"
+
+mkdir -p "$ARCHIVE_DIR"
+
+# ------------------------------------------------------------
+# Archive previous run if branch changed
+# ------------------------------------------------------------
+if [[ -f "$PRD_FILE" && -f "$LAST_BRANCH_FILE" ]]; then
+  CURRENT_BRANCH=$(jq -r '.branchName // empty' "$PRD_FILE" 2>/dev/null || true)
+  LAST_BRANCH=$(cat "$LAST_BRANCH_FILE" 2>/dev/null || true)
+
+  if [[ -n "$CURRENT_BRANCH" && -n "$LAST_BRANCH" && "$CURRENT_BRANCH" != "$LAST_BRANCH" ]]; then
+    DATE=$(date +%Y-%m-%d)
+    FOLDER_NAME="${LAST_BRANCH#ralph/}"
+    ARCHIVE_FOLDER="$ARCHIVE_DIR/$DATE-$FOLDER_NAME"
+
+    echo "Archiving previous run: $LAST_BRANCH"
+    mkdir -p "$ARCHIVE_FOLDER"
+
+    [[ -f "$PRD_FILE" ]] && cp "$PRD_FILE" "$ARCHIVE_FOLDER/"
+    [[ -f "$PROGRESS_FILE" ]] && cp "$PROGRESS_FILE" "$ARCHIVE_FOLDER/"
+
+    echo "Archived to: $ARCHIVE_FOLDER"
+
+    echo "# Ralph Progress Log" > "$PROGRESS_FILE"
+    echo "Started: $(date)" >> "$PROGRESS_FILE"
+    echo "---" >> "$PROGRESS_FILE"
+  fi
 fi
 
-for ((i=1; i<=$1; i++)); do
-  echo "Iteration $i"
-  echo "--------------------------------"
-  result=$(docker sandbox run claude -p "@plans/task.md @progress.txt \
-1. Find the highest-priority feature to work on and work only on that feature. \
-This should be the one YOU decide has the highest priority - not necessarily the first in the list. \
-2. Check that the types check via npm run typecheck and that the tests pass via npm run test. \
-3. Update the PRD with the work that was done. \
-4. Append your progress to the progress.txt file. \
-Use this to leave a note for the next person working in the codebase. \
-5. Make a git commit of that feature. \
-ONLY WORK ON A SINGLE FEATURE. \
-If, while implementing the feature, you notice the PRD is complete, output <promise>COMPLETE</promise>. \
-")
+# ------------------------------------------------------------
+# Track current branch
+# ------------------------------------------------------------
+if [[ -f "$PRD_FILE" ]]; then
+  CURRENT_BRANCH=$(jq -r '.branchName // empty' "$PRD_FILE" 2>/dev/null || true)
+  [[ -n "$CURRENT_BRANCH" ]] && echo "$CURRENT_BRANCH" > "$LAST_BRANCH_FILE"
+fi
 
-  echo "$result"
+# ------------------------------------------------------------
+# Init progress file
+# ------------------------------------------------------------
+if [[ ! -f "$PROGRESS_FILE" ]]; then
+  echo "# Ralph Progress Log" > "$PROGRESS_FILE"
+  echo "Started: $(date)" >> "$PROGRESS_FILE"
+  echo "---" >> "$PROGRESS_FILE"
+fi
 
-  if [[ "$result" == *"<promise>COMPLETE</promise>"* ]]; then
-    echo "PRD complete, exiting."
-    tt notify "CVM PRD complete after $i iterations"
+echo "Starting Ralph – Max iterations: $MAX_ITERATIONS"
+
+# ------------------------------------------------------------
+# Main Ralph loop
+# ------------------------------------------------------------
+for i in $(seq 1 "$MAX_ITERATIONS"); do
+  echo
+  echo "═══════════════════════════════════════════════════════"
+  echo "  Ralph Iteration $i of $MAX_ITERATIONS"
+  echo "═══════════════════════════════════════════════════════"
+
+  echo
+  echo ">>> Running OpenCode at $(date)"
+  echo ">>> Iteration $i" >> "$PROGRESS_FILE"
+
+  TMP_OUTPUT=$(mktemp)
+
+  # ---- Run OpenCode safely -----------------
+  while true; do
+    if cat "$SCRIPT_DIR/prompt.md" \
+       | opencode 2>&1 \
+       | tee "$TMP_OUTPUT" | tee -a "$PROGRESS_FILE"; then
+      # Success, break out of the retry loop
+      break
+    else
+      # Non-zero exit code: probably spending limit reached
+      echo
+      echo "⚠️ OpenCode exited with an error. Possibly spending limit reached."
+      echo "Waiting 5 minutes before retry..."
+      sleep 300  # 5 minutes
+    fi
+  done
+
+  OUTPUT=$(cat "$TMP_OUTPUT")
+  rm "$TMP_OUTPUT"
+
+  # ---- Completion check -----------------------------------
+  if echo "$OUTPUT" | grep -q "<promise>COMPLETE</promise>"; then
+    echo
+    echo "🎉 Ralph completed all tasks!"
+    echo "Completed at iteration $i of $MAX_ITERATIONS"
+
+    echo
+    echo "Completed: $(date)" >> "$PROGRESS_FILE"
     exit 0
   fi
+
+  echo
+  echo "Iteration $i complete. Continuing..."
+  sleep 2
 done
+
+echo
+echo "⚠️ Ralph reached max iterations ($MAX_ITERATIONS) without completing all tasks."
+echo "Check $PROGRESS_FILE for status."
+exit 1
