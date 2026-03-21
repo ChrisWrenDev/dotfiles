@@ -1,57 +1,55 @@
 ---
-description: Create implementation plan for highest priority Linear ticket ready for spec
+description: Create implementation plan for highest priority task ready for planning
 ---
 
-## PART I - IF A TICKET IS MENTIONED
+## PART I - IF A TASK FILE IS MENTIONED
 
-0c. use `linear` cli to fetch the selected item into thoughts with the ticket number - ./thoughts/shared/tickets/ENG-xxxx.md
-0d. read the ticket and all comments to learn about past implementations and research, and any questions or concerns about them
+0c. read the task file from the `tasks/` directory (e.g., `tasks/TASK-001.md`)
+0d. read the task and any linked research documents from its `## Links` section
 
-### PART I - IF NO TICKET IS MENTIONED
+## PART I - IF NO TASK IS MENTIONED
 
-0.  read opencode/commands/linear.md
-    0a. fetch the top 10 priority items from linear in status "spec needed" using the MCP tools, noting all items in the `links` section
-    0b. select the highest priority SMALL or XS issue from the list (if no SMALL or XS issues exist, EXIT IMMEDIATELY and inform the user)
-    0c. use `linear` cli to fetch the selected item into thoughts with the ticket number - ./thoughts/shared/tickets/ENG-xxxx.md
-    0d. read the ticket and all comments to learn about past implementations and research, and any questions or concerns about them
+0.  read all task files in the `tasks/` directory
+    0a. read each file's frontmatter to find tasks with `status: plan-needed` or `status: research-done`
+    0b. select the highest priority `small` or `xs` task (if none exist, EXIT IMMEDIATELY and inform the user)
+    0c. read the selected task file fully
+    0d. read any linked research documents from the task's `## Links` section
 
-### PART II - NEXT STEPS
+## PART II - NEXT STEPS
 
 think deeply
 
-1. move the item to "plan in progress" using the MCP tools
+1. update the task file: set `status: plan-in-progress`
    1a. read opencode/commands/create_plan.md
-   1b. determine if the item has a linked implementation plan document based on the `links` section
-   1c. if the plan exists, you're done, respond with a link to the ticket
-   1d. if the research is insufficient or has unanswered questions, create a new plan document following the instructions in opencode/commands/create_plan.md
+   1b. check the task's `## Links` section for an existing implementation plan
+   1c. if a plan already exists, set `status: plan-ready` and EXIT with the plan path
+   1d. if research is insufficient or has unanswered questions, create the plan following opencode/commands/create_plan.md
 
 think deeply
 
-2. when the plan is complete, use the `thoughts_sync` tool and attach the doc to the ticket using the MCP tools and create a terse comment with a link to it (re-read opencode/commands/linear.md if needed)
-   2a. move the item to "plan in review" using the MCP tools
+2. when the plan is complete, use the `thoughts_sync` tool and update the task file:
+   2a. add the plan document path to the task's `## Links` section
+   2b. set `status: plan-ready`
 
-think deeply, use TodoWrite to track your tasks. When fetching from linear, get the top 10 items by priority but only work on ONE item - specifically the highest priority SMALL or XS sized issue.
+think deeply, use TodoWrite to track your tasks.
 
-### PART III - When you're done
+## PART III - When you're done
 
 Print a message for the user (replace placeholders with actual values):
 
 ```
-✅ Completed implementation plan for ENG-XXXX: [ticket title]
+✅ Completed implementation plan for [task ID]: [task title]
 
 Approach: [selected approach description]
 
 The plan has been:
 
-Created at thoughts/shared/plans/YYYY-MM-DD-ENG-XXXX-description.md
+Created at thoughts/shared/plans/YYYY-MM-DD-TASK-XXX-description.md
 Synced to thoughts repository
-Attached to the Linear ticket
-Ticket moved to "plan in review" status
+Task updated to "plan-ready"
 
 Implementation phases:
 - Phase 1: [phase 1 description]
 - Phase 2: [phase 2 description]
 - Phase 3: [phase 3 description if applicable]
-
-View the ticket: [Linear ticket URL]
 ```

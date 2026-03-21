@@ -51,8 +51,6 @@ Then wait for the user's input.
    Before asking the user any questions, use specialized agents to research in parallel:
    - Use the **codebase-locator** agent to find all files related to the ticket/task
    - Use the **codebase-analyzer** agent to understand how the current implementation works
-   - If a Linear ticket is mentioned, use the **linear-ticket-reader** agent to get full details
-
    These agents will:
    - Find relevant source files, configs, and tests
    - Identify the specific directories to focus on (e.g., if WUI is mentioned, they'll focus on the repo's WUI/frontend directory)
@@ -108,9 +106,6 @@ After getting initial clarifications:
    - **codebase-locator** - To find more specific files (e.g., "find all files that handle [specific component]")
    - **codebase-analyzer** - To understand implementation details (e.g., "analyze how [system] works")
    - **codebase-pattern-finder** - To find similar features we can model after
-
-   **For related tickets:**
-   - **linear-searcher** - To find similar issues or past implementations
 
    Each agent knows how to:
    - Find the right files and code patterns

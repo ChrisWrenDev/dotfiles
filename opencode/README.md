@@ -5,7 +5,7 @@ A terminal-first OpenCode setup built around four pillars:
 - **Approval gating** — every destructive or mutating action requires explicit permission
 - **Parallel sessions** — multiple OpenCode sessions for concurrent work on multiple tickets
 - **Persistent context** — a `thoughts/` directory tracked in git holds research, plans, and handoffs across sessions
-- **Linear integration** — slash commands drive tickets through a full research → plan → implement workflow
+- **Local task management** — slash commands drive tasks through a full research → plan → implement workflow
 
 ---
 
@@ -112,18 +112,16 @@ All agents are configured as **documentarians, not critics** — they describe w
 | `/validate_plan`       | Verify an implementation against a plan's success criteria                                          |
 | `/implement_plan`      | Execute an approved plan phase-by-phase with verification                                           |
 
-### Linear Workflow
+### Task Workflow
 
-| Command           | Description                                                                                                                                                                    |
-| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| `/linear`         | Full Linear ticket management — create, update, comment, attach documents                                                                                                      |
-| `/ralph`          | **Autonomous loop**: fetches a queue of XS/Small tickets from Linear, processes them through research → plan → impl setup, maintains a JSON task queue with retry and recovery |
-| `/ralph_research` | Single-shot: research the highest-priority "research needed" ticket                                                                                                            |
-| `/ralph_plan`     | Single-shot: create a plan for the highest-priority "spec needed" ticket                                                                                                       |
-| `/ralph_impl`     | Single-shot: prepare implementation instructions for the highest-priority "ready for dev" ticket                                                                               |
-| `/oneshot`        | Research a specific ticket then output planning session launch instructions                                                                                                    |
-| `/oneshot_plan`   | Run `/ralph_plan` then `/ralph_impl` sequentially for a specific ticket                                                                                                        |
-| `/founder_mode`   | Retroactively create a Linear ticket and PR for an experimental commit                                                                                                         |
+| Command           | Description                                                                                                                                                            |
+| ----------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `/ralph`          | **Autonomous loop**: reads tasks from `tasks/`, processes them through research → plan → impl setup, maintains a JSON task queue with retry and recovery               |
+| `/ralph_research` | Single-shot: research the highest-priority `research-needed` task                                                                                                      |
+| `/ralph_plan`     | Single-shot: create a plan for the highest-priority `plan-needed` task                                                                                                 |
+| `/ralph_impl`     | Single-shot: prepare implementation instructions for the highest-priority `plan-ready` task                                                                            |
+| `/oneshot`        | Research a specific task then output planning session instructions                                                                                                     |
+| `/oneshot_plan`   | Run `/ralph_plan` then `/ralph_impl` sequentially for a specific task                                                                                                  |
 
 ### Git & PRs
 
@@ -152,24 +150,24 @@ All agents are configured as **documentarians, not critics** — they describe w
 
 ## Workflow Patterns
 
-### Autonomous ticket processing (`/ralph`)
+### Autonomous task processing (`/ralph`)
 
 ```
-/ralph                    # process all eligible XS/Small tickets across all phases
-/ralph research           # only process "research needed" tickets
-/ralph plan               # only process "spec needed" / "ready for plan" tickets
-/ralph impl               # only process "ready for dev" tickets
+/ralph                    # process all eligible xs/small tasks across all phases
+/ralph research           # only process "research-needed" tasks
+/ralph plan               # only process "plan-needed" / "research-done" tasks
+/ralph impl               # only process "plan-ready" tasks
 /ralph <queue-file>       # resume from an existing queue file
 ```
 
-Ralph maintains a JSON queue at `thoughts/shared/handoffs/ralph-queue-TIMESTAMP.json`. Each task has `status`, `attempts`, `error`, and `output` fields. Set `stop_requested: true` in the file to halt cleanly after the current task.
+Ralph reads tasks from the `tasks/` directory. Each task file has frontmatter fields: `id`, `title`, `status`, `size`, `priority`. Ralph maintains a JSON queue at `thoughts/shared/handoffs/ralph-queue-TIMESTAMP.json` for loop state and retry tracking. Set `stop_requested: true` in the queue file to halt cleanly after the current task.
 
-### Single-ticket loop
+### Single-task loop
 
 ```
-/ralph_research ENG-1234  →  research doc created, ticket → "research in review"
-/ralph_plan ENG-1234      →  plan created, ticket → "plan in review"
-/ralph_impl ENG-1234      →  implementation instructions printed
+/ralph_research tasks/TASK-001.md  →  research doc created, task → "research-done"
+/ralph_plan tasks/TASK-001.md      →  plan created, task → "plan-ready"
+/ralph_impl tasks/TASK-001.md      →  implementation instructions printed
 ```
 
 ### Manual implementation workflow
@@ -193,12 +191,14 @@ Ralph maintains a JSON queue at `thoughts/shared/handoffs/ralph-queue-TIMESTAMP.
 
 ---
 
-## Linear Workflow States
+## Task Workflow States
+
+Tasks live in the `tasks/` directory as markdown files with frontmatter.
 
 ```
-Triage → Spec Needed → Research Needed → Research in Progress
-       → Research in Review → Ready for Plan → Plan in Progress
-       → Plan in Review → Ready for Dev → In Dev → Code Review → Done
+todo → research-needed → research-in-progress → research-done
+     → plan-needed → plan-in-progress → plan-ready
+     → in-dev → done
 ```
 
 Key principle: review and alignment happen at the **plan stage**, not the PR stage.
@@ -239,8 +239,8 @@ Commands that use opus: `create_plan`, `create_plan_nt`, `create_plan_generic`, 
 ## Setup Checklist
 
 - [ ] Decide: `thoughts/` as its own git repo, or inside the main repo
-- [ ] Set your canonical GitHub URL pattern for `thoughts/` document links (in `linear.md` or an `AGENTS.md`)
+- [ ] Set your canonical GitHub URL pattern for `thoughts/` document links (in an `AGENTS.md`)
 - [ ] Replace `<username>` placeholder in `agents/thoughts-locator.md` with your actual username
-- [ ] Replace the hardcoded Linear UUIDs in `commands/linear.md` with your own org's IDs
+- [ ] Create a `tasks/` directory in your project root for local task files
 - [ ] Run `opencode` and verify all custom tools load without errors
 - [ ] Run `thoughts_status` to confirm `thoughts/` git state is healthy
