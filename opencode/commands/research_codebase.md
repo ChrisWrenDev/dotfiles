@@ -1,6 +1,6 @@
 ---
 description: Document codebase as-is through parallel sub-agent research
-model: opus
+model: anthropic/claude-opus-4-6
 ---
 
 # Research Codebase

@@ -1,6 +1,6 @@
 ---
 description: Generate task files in tasks/ from research findings or a problem description
-model: opus
+model: anthropic/claude-opus-4-6
 ---
 
 # Create Tasks

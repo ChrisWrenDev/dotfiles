@@ -1,6 +1,6 @@
 ---
 description: Autonomous agent loop - continuously processes local tasks through research, planning, and implementation setup
-model: opus
+model: anthropic/claude-opus-4-6
 ---
 
 # Ralph — Autonomous Task Processing Loop

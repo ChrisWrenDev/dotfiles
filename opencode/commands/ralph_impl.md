@@ -1,6 +1,6 @@
 ---
 description: Set up implementation for highest priority task ready for dev
-model: sonnet
+model: anthropic/claude-sonnet-4-6
 ---
 
 ## PART I - IF A TASK FILE IS MENTIONED

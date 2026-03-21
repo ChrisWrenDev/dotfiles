@@ -1,6 +1,6 @@
 ---
 description: Create detailed implementation plans through interactive research and iteration
-model: opus
+model: anthropic/claude-opus-4-6
 ---
 
 # Implementation Plan

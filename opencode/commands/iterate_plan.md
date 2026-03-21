@@ -1,6 +1,6 @@
 ---
 description: Iterate on existing implementation plans with targeted research and updates
-model: opus
+model: anthropic/claude-opus-4-6
 ---
 
 # Iterate Implementation Plan

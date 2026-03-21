@@ -1,0 +1,155 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "model": "anthropic/claude-sonnet-4-6",
+  "permission": {
+    "read": "allow",
+    "grep": "allow",
+    "glob": "allow",
+    "list": "allow",
+    "edit": "ask",
+    "write": "ask",
+    "patch": "ask",
+    "webfetch": "ask",
+    "websearch": "ask",
+    "bash": {
+      "rm*": "deny",
+      "sudo*": "deny",
+      "chmod*": "deny",
+      "chown*": "deny",
+      "git status*": "allow",
+      "git diff*": "allow",
+      "git log*": "allow",
+      "git branch*": "allow",
+      "git show*": "allow",
+      "git rev-parse*": "allow",
+      "git stash list*": "allow",
+      "bash opencode/scripts/thoughts_status.sh": "allow",
+      "bash opencode/scripts/spec_metadata.sh": "allow",
+      "bash opencode/scripts/thoughts_sync.sh*": "ask",
+      "bash opencode/scripts/thoughts_init.sh*": "ask",
+      "make check*": "allow",
+      "make test*": "allow",
+      "make lint*": "allow",
+      "make build*": "allow",
+      "npm test*": "allow",
+      "npm run test*": "allow",
+      "npm run lint*": "allow",
+      "npm run build*": "allow",
+      "bun test*": "allow",
+      "bun run*": "allow",
+      "npx *": "allow",
+      "go test*": "allow",
+      "go build*": "allow",
+      "go vet*": "allow",
+      "gh pr view*": "allow",
+      "gh issue view*": "allow",
+      "gh repo view*": "allow",
+      "gh api*": "allow",
+      "*": "ask"
+    }
+  },
+  "agent": {
+    "codebase-locator": {
+      "description": "Locates files, directories, and components by feature or topic — grep/glob/list only",
+      "mode": "subagent",
+      "model": "anthropic/claude-sonnet-4-6",
+      "permission": {
+        "grep": "allow",
+        "glob": "allow",
+        "list": "allow",
+        "read": "deny",
+        "edit": "deny",
+        "write": "deny",
+        "bash": "deny",
+        "webfetch": "deny",
+        "websearch": "deny"
+      },
+      "prompt": "{file:skills/codebase-locator.md}"
+    },
+    "codebase-analyzer": {
+      "description": "Reads and explains how specific code works — read-only",
+      "mode": "subagent",
+      "model": "anthropic/claude-sonnet-4-6",
+      "permission": {
+        "read": "allow",
+        "grep": "allow",
+        "glob": "allow",
+        "list": "allow",
+        "edit": "deny",
+        "write": "deny",
+        "bash": "deny",
+        "webfetch": "deny",
+        "websearch": "deny"
+      },
+      "prompt": "{file:skills/codebase-analyzer.md}"
+    },
+    "codebase-pattern-finder": {
+      "description": "Finds similar implementations and usage patterns in the codebase — read-only",
+      "mode": "subagent",
+      "model": "anthropic/claude-sonnet-4-6",
+      "permission": {
+        "grep": "allow",
+        "glob": "allow",
+        "read": "allow",
+        "list": "allow",
+        "edit": "deny",
+        "write": "deny",
+        "bash": "deny",
+        "webfetch": "deny",
+        "websearch": "deny"
+      },
+      "prompt": "{file:skills/codebase-pattern-finder.md}"
+    },
+    "thoughts-locator": {
+      "description": "Discovers relevant documents in thoughts/ directory — grep/glob/list only",
+      "mode": "subagent",
+      "model": "anthropic/claude-sonnet-4-6",
+      "permission": {
+        "grep": "allow",
+        "glob": "allow",
+        "list": "allow",
+        "read": "deny",
+        "edit": "deny",
+        "write": "deny",
+        "bash": "deny",
+        "webfetch": "deny",
+        "websearch": "deny"
+      },
+      "prompt": "{file:skills/thoughts-locator.md}"
+    },
+    "thoughts-analyzer": {
+      "description": "Extracts key insights from specific thoughts/ documents — read-only",
+      "mode": "subagent",
+      "model": "anthropic/claude-sonnet-4-6",
+      "permission": {
+        "read": "allow",
+        "grep": "allow",
+        "glob": "allow",
+        "list": "allow",
+        "edit": "deny",
+        "write": "deny",
+        "bash": "deny",
+        "webfetch": "deny",
+        "websearch": "deny"
+      },
+      "prompt": "{file:skills/thoughts-analyzer.md}"
+    },
+    "web-search-researcher": {
+      "description": "Researches external docs, APIs, and best practices via web search",
+      "mode": "subagent",
+      "model": "anthropic/claude-sonnet-4-6",
+      "permission": {
+        "websearch": "allow",
+        "webfetch": "allow",
+        "read": "deny",
+        "grep": "deny",
+        "glob": "deny",
+        "list": "deny",
+        "edit": "deny",
+        "write": "deny",
+        "bash": "deny"
+      },
+      "prompt": "{file:skills/web-search-researcher.md}"
+    }
+  }
+}
