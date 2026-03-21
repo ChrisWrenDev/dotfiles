@@ -153,14 +153,36 @@ Always verify:
 - [ ] Documentation updated if needed
 - [ ] Manual test steps are clear
 
+## Closing the Task
+
+After generating the validation report, determine the outcome:
+
+**If all automated checks pass and no blocking issues were found:**
+
+1. Ask the user: "Validation passed. Should I mark this task as done?"
+2. If yes, locate the task file in `tasks/` (check the plan's `## References` section, or search for a task whose `## Links` points to this plan).
+3. Update the task file: set `status: done`.
+4. Add a `## Validation` section to the task file:
+   ```markdown
+   ## Validation
+   - Validated: [date]
+   - Plan: [path to plan]
+   - Result: passed
+   ```
+5. If `thoughts/` exists, run `bash opencode/scripts/thoughts_sync.sh`.
+
+**If there are blocking issues:**
+
+- Leave the task at `status: in-dev`.
+- Add a note to the task file listing what must be fixed before it can be closed.
+- Do not mark as done until issues are resolved and validation is re-run.
+
 ## Relationship to Other Commands
 
 Recommended workflow:
-1. `/implement_plan` - Execute the implementation
-2. `/commit` - Create atomic commits for changes
-3. `/validate_plan` - Verify implementation correctness
-4. `/describe_pr` - Generate PR description
+1. `/implement_plan` — execute the implementation
+2. `/commit` — create atomic commits
+3. `/validate_plan` — verify correctness and mark task done
+4. `/describe_pr` — generate PR description
 
-The validation works best after commits are made, as it can analyze the git history to understand what was implemented.
-
-Remember: Good validation catches issues before they reach production. Be constructive but thorough in identifying gaps or improvements.
+Validation works best after commits are made, as it can use git history to understand what was implemented.
