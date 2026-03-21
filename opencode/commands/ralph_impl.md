@@ -26,17 +26,11 @@ think deeply
 
 think deeply about the implementation
 
-2. set up worktree for implementation:
-   2a. use the `worktree_create` tool to create a new worktree with the Linear branch name
-
-2b. Provide instructions for launching the implementation session:
+2. Provide instructions for the implementation session:
 
 ```
-To launch the implementation session, run in your terminal:
+Open a new OpenCode session in your worktree and run:
 
-tmux new-window -n "implement ENG-XXXX" -c "~/wt/<repo>/ENG-XXXX" "opencode -m anthropic/claude-opus-4-6"
-
-Then in OpenCode, run:
 /implement_plan [path-to-plan]
 
 After implementation completes and tests pass:
@@ -44,12 +38,6 @@ After implementation completes and tests pass:
 /describe_pr
 
 Then add a comment to the Linear ticket with the PR link.
-```
-
-Alternatively, with relaxed permissions for faster iteration:
-
-```
-tmux new-window -n "implement ENG-XXXX" -c "~/wt/<repo>/ENG-XXXX" "opencode -m anthropic/claude-opus-4-6 -p allow"
 ```
 
 think deeply, use TodoWrite to track your tasks. When fetching from linear, get the top 10 items by priority but only work on ONE item - specifically the highest priority SMALL or XS sized issue.

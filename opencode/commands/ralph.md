@@ -195,9 +195,9 @@ If stopping, jump to **WRAP-UP**.
 ### Phase: `impl_setup`
 
 **Entry state**: `ready for dev`
-**Exit state**: ticket moved to `in dev`, worktree created, human given launch instructions
+**Exit state**: ticket moved to `in dev`, human given implementation instructions
 
-> **Note**: Ralph cannot implement code in a new worktree within the same session. This phase sets up the worktree and gives the human the exact commands to launch an implementation session. The task is marked `awaiting_human` not `completed` — the human must confirm implementation is done.
+> **Note**: Ralph cannot implement code within the same session. This phase gives the human the information needed to launch an implementation session. The task is marked `awaiting_human` not `completed` — the human must confirm implementation is done.
 
 1. Fetch the full ticket using MCP: `mcp__linear__get_issue`
 2. Identify the linked implementation plan from the ticket's `links` section
@@ -207,21 +207,15 @@ If stopping, jump to **WRAP-UP**.
    - Mark the task `failed` with error `"no plan linked"`
    - Continue loop
 4. Move the ticket to `in dev` (`6be18699-18d7-496e-a7c9-37d2ddefe612`) using MCP
-5. Use the `worktree_create` tool to create a worktree with the Linear branch name
-6. Update the task in the queue JSON: `status: "awaiting_human"`, `output: "<worktree path>"`
-7. Print the launch instructions (do NOT continue the loop for this task — it requires human action):
+5. Update the task in the queue JSON: `status: "awaiting_human"`, `output: "<plan path>"`
+6. Print the implementation instructions (do NOT continue the loop for this task — it requires human action):
 
 ```
 ⏸  ENG-XXX [impl_setup] — awaiting human
 
-Worktree created at: ~/wt/<repo>/ENG-XXX
 Plan: thoughts/shared/plans/YYYY-MM-DD-ENG-XXX-description.md
 
-To implement, run in your terminal:
-
-  tmux new-window -n "ENG-XXX" -c "~/wt/<repo>/ENG-XXX" "opencode -m anthropic/claude-opus-4-6"
-
-Then in OpenCode:
+Open a new OpenCode session in your worktree and run:
 
   /implement_plan thoughts/shared/plans/YYYY-MM-DD-ENG-XXX-description.md
 
@@ -232,7 +226,7 @@ After implementation and tests pass:
 Then add a PR link comment to the Linear ticket.
 ```
 
-8. Continue the loop with the next pending task (do not block on this one)
+7. Continue the loop with the next pending task (do not block on this one)
 
 ---
 
@@ -254,7 +248,7 @@ Completed:
   - ENG-456 [plan]     → plan: thoughts/shared/plans/...
 
 Awaiting human (impl sessions to launch):
-  - ENG-789 [impl_setup] → ~/wt/<repo>/ENG-789
+  - ENG-789 [impl_setup] → thoughts/shared/plans/...
 
 Failed:
   - ENG-999 [plan] → "plan blocked: unclear whether to use REST or gRPC"
