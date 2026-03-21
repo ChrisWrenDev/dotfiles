@@ -95,6 +95,7 @@ All agents are configured as **documentarians, not critics** — they describe w
 
 | Command               | Description                                                                                                                                              |
 | --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `/research_questions` | Given a task, generate a structured questions file in `thoughts/` that defines what `/research_codebase` should answer                                   |
 | `/research_codebase`  | Comprehensive codebase research with parallel sub-agents; writes to `thoughts/shared/research/` if available, otherwise `/tmp/research/`                 |
 
 ### Planning
