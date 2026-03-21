@@ -94,23 +94,18 @@ All agents are configured as **documentarians, not critics** — they describe w
 
 ### Research
 
-| Command                      | Description                                                                                                              |
-| ---------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
-| `/research_codebase`         | Comprehensive codebase research with parallel sub-agents; writes a research doc to `thoughts/shared/research/` and syncs |
-| `/research_codebase_nt`      | Same, without `thoughts/` integration; uses `/tmp` for output                                                            |
-| `/research_codebase_generic` | Generic version with no team-specific references                                                                         |
+| Command               | Description                                                                                                                                              |
+| --------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `/research_codebase`  | Comprehensive codebase research with parallel sub-agents; writes to `thoughts/shared/research/` if available, otherwise `/tmp/research/`                 |
 
 ### Planning
 
-| Command                | Description                                                                                         |
-| ---------------------- | --------------------------------------------------------------------------------------------------- |
-| `/create_plan`         | Interactive implementation plan creation with codebase research; writes to `thoughts/shared/plans/` |
-| `/create_plan_nt`      | Same, without `thoughts/` integration                                                               |
-| `/create_plan_generic` | Generic version                                                                                     |
-| `/iterate_plan`        | Update an existing plan with new research                                                           |
-| `/iterate_plan_nt`     | Same, without `thoughts/` integration                                                               |
-| `/validate_plan`       | Verify an implementation against a plan's success criteria                                          |
-| `/implement_plan`      | Execute an approved plan phase-by-phase with verification                                           |
+| Command           | Description                                                                                                                                       |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `/create_plan`    | Interactive implementation plan creation with codebase research; writes to `thoughts/shared/plans/` if available, otherwise `./plans/`            |
+| `/iterate_plan`   | Update an existing plan with targeted research                                                                                                    |
+| `/validate_plan`  | Verify an implementation against a plan's success criteria                                                                                        |
+| `/implement_plan` | Execute an approved plan phase-by-phase with verification                                                                                         |
 
 ### Task Workflow
 
@@ -125,13 +120,10 @@ All agents are configured as **documentarians, not critics** — they describe w
 
 ### Git & PRs
 
-| Command           | Description                                                              |
-| ----------------- | ------------------------------------------------------------------------ |
-| `/commit`         | Create a git commit with user approval; no Claude attribution in message |
-| `/ci_commit`      | Same, without user approval step (for CI/unattended use)                 |
-| `/describe_pr`    | Generate a PR description from a template in `thoughts/shared/`          |
-| `/describe_pr_nt` | Same, with an embedded template; saves to `/tmp`                         |
-| `/ci_describe_pr` | CI-mode PR description using the `thoughts/shared/` template             |
+| Command        | Description                                                                                                                           |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| `/commit`      | Create focused git commits; confirms with user by default, executes immediately when called from automated flows; no Claude attribution |
+| `/describe_pr` | Generate a PR description; reads template from `thoughts/shared/` if available, otherwise uses built-in template                      |
 
 ### Session Management
 
