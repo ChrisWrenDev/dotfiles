@@ -16,7 +16,7 @@ opencode/
 ├── opencode.json       # Permissions, env vars, MCP settings
 ├── agents/             # Reusable sub-agents spawned by Task tool
 ├── commands/           # Slash commands (/research_codebase, /ralph, etc.)
-└── tools/              # Custom TypeScript tools (thoughts_sync, worktree_create, etc.)
+└── scripts/            # Shell scripts (spec_metadata, thoughts_sync, thoughts_init, thoughts_status)
 ```
 
 ---
@@ -30,8 +30,8 @@ Defined in `opencode.json`. Default is `ask` for everything not listed.
 | Read files                                            | Allow (except `.env`, `.env.*`) |
 | Navigation (glob, grep, list, lsp, task)              | Allow                           |
 | Edit files                                            | Ask                             |
-| `thoughts_status`, `spec_metadata`                    | Allow (read-only tools)         |
-| `thoughts_sync`, `thoughts_init`                      | Ask                             |
+| `opencode/scripts/thoughts_status.sh`, `spec_metadata.sh` | Allow                       |
+| `opencode/scripts/thoughts_sync.sh`, `thoughts_init.sh`   | Ask                         |
 | Git read commands (status, diff, log, branch, show…)  | Allow                           |
 | Build/test/lint (make, go, npm, bun, npx)             | Allow                           |
 | GitHub CLI read (pr view, issue view, repo view, api) | Allow                           |
@@ -40,17 +40,21 @@ Defined in `opencode.json`. Default is `ask` for everything not listed.
 
 ---
 
-## Custom Tools
+## Scripts
 
-Implemented in TypeScript under `tools/`. Loaded automatically by OpenCode.
+Shell scripts under `scripts/`. Run with `bash opencode/scripts/<name>.sh`.
 
-### `thoughts_sync`
+### `spec_metadata.sh`
 
-Stage all changes in `thoughts/`, commit with a timestamp message (or custom message), and push to remote. Use after creating any research doc, plan, or handoff.
+Prints repo metadata for document frontmatter: datetime, git commit hash, branch name, repo name, filename-safe timestamp, and thoughts/ branch status.
 
-### `thoughts_init`
+### `thoughts_sync.sh [message]`
 
-Bootstrap the `thoughts/` directory. Either clones an existing repo or creates the standard empty directory structure:
+Stages all changes in `thoughts/`, commits with a timestamp message (or optional custom message), and pushes. Use after creating any research doc, plan, or handoff.
+
+### `thoughts_init.sh [repo-url]`
+
+Bootstraps the `thoughts/` directory. Clones from a URL if provided, otherwise creates the standard empty structure:
 
 ```
 thoughts/
@@ -60,16 +64,11 @@ thoughts/
 │   ├── tickets/
 │   ├── prs/
 │   └── handoffs/
-└── <username>/
 ```
 
-### `thoughts_status`
+### `thoughts_status.sh`
 
-Show the git status of `thoughts/` — branch, tracking info, and uncommitted changes.
-
-### `spec_metadata`
-
-Collect repo metadata for use in document frontmatter: current datetime, git commit hash, branch name, repo name, filename-safe timestamp, and thoughts/ branch status.
+Shows git status of `thoughts/` — branch, tracking info, and uncommitted changes.
 
 ---
 
@@ -235,4 +234,4 @@ Commands that use opus: `create_plan`, `create_plan_nt`, `create_plan_generic`, 
 - [ ] Replace `<username>` placeholder in `agents/thoughts-locator.md` with your actual username
 - [ ] Create a `tasks/` directory in your project root for local task files
 - [ ] Run `opencode` and verify all custom tools load without errors
-- [ ] Run `thoughts_status` to confirm `thoughts/` git state is healthy
+- [ ] Run `bash opencode/scripts/thoughts_status.sh` to confirm `thoughts/` git state is healthy

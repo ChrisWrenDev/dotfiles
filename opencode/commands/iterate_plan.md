@@ -64,7 +64,7 @@ Does this align with your intent?
 
 ### Step 5: Sync and Present
 
-1. **If `thoughts/` exists:** use `thoughts_sync`.
+1. **If `thoughts/` exists:** run `bash opencode/scripts/thoughts_sync.sh`.
 2. Present what changed:
 
    ```

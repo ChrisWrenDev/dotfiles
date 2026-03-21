@@ -65,7 +65,7 @@ Fill out every section from the template. Be specific about problems solved. Foc
 
 ### 8. Save and update
 
-- **If `thoughts/` exists:** save to `thoughts/shared/prs/{number}_description.md`, then run `thoughts_sync`
+- **If `thoughts/` exists:** save to `thoughts/shared/prs/{number}_description.md`, then run `bash opencode/scripts/thoughts_sync.sh`
 - **Otherwise:** save to `/tmp/{repo_name}/prs/{number}_description.md`
 - Update the PR: `gh pr edit {number} --body-file {saved_path}`
 - Confirm success. Remind user of any unchecked manual verification steps.

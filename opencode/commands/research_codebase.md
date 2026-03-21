@@ -46,7 +46,7 @@ Then wait for the user's research query.
 - **codebase-analyzer** — understand HOW specific code works
 - **codebase-pattern-finder** — find examples of existing patterns
 
-**If `thoughts/` directory exists (check with `thoughts_status` tool):**
+**If `thoughts/` directory exists (check with `bash opencode/scripts/thoughts_status.sh`):**
 - **thoughts-locator** — discover what documents exist about the topic
 - **thoughts-analyzer** — extract key insights from the most relevant documents
 
@@ -69,7 +69,7 @@ All agents are documentarians, not critics — describe what exists without sugg
 
 ### 5. Determine output location
 
-- Use `spec_metadata` tool to get metadata (datetime, git hash, branch, repo name)
+- Run `bash opencode/scripts/spec_metadata.sh` to get metadata (datetime, git hash, branch, repo name)
 - **If `thoughts/` exists:** save to `thoughts/shared/research/YYYY-MM-DD-description.md`
 - **If no `thoughts/`:** save to `/tmp/research/YYYY-MM-DD-description.md`
 - If a task ID is relevant, include it: `YYYY-MM-DD-TASK-XXX-description.md`
@@ -139,7 +139,7 @@ status: complete
 
 ### 8. Sync and present
 
-- **If `thoughts/` exists:** use `thoughts_sync` tool to commit and push
+- **If `thoughts/` exists:** run `bash opencode/scripts/thoughts_sync.sh` to commit and push
 - Present a concise summary to the user with key file references
 - Ask if they have follow-up questions
 

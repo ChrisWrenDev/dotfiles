@@ -44,7 +44,7 @@ think deeply about the findings
    3a. summarize key findings and technical decisions
    3b. identify potential implementation approaches
    3c. note any risks or concerns discovered
-   3d. use the `thoughts_sync` tool to save the research
+   3d. run `bash opencode/scripts/thoughts_sync.sh` to save the research
 
 4. update the task file:
    4a. add the research document path under the `## Links` section

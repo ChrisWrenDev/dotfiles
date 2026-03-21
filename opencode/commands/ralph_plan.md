@@ -27,7 +27,7 @@ think deeply
 
 think deeply
 
-2. when the plan is complete, use the `thoughts_sync` tool and update the task file:
+2. when the plan is complete, run `bash opencode/scripts/thoughts_sync.sh` and update the task file:
    2a. add the plan document path to the task's `## Links` section
    2b. set `status: plan-ready`
 

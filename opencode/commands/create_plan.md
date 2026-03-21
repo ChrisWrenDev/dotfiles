@@ -199,7 +199,7 @@ Use this structure:
 
 ### Step 5: Sync and Review
 
-1. **If `thoughts/` exists:** use `thoughts_sync` tool.
+1. **If `thoughts/` exists:** run `bash opencode/scripts/thoughts_sync.sh`.
 
 2. Present the draft location and ask for feedback:
 

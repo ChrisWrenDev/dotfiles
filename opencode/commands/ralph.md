@@ -80,7 +80,7 @@ Valid statuses: `todo`, `research-needed`, `research-in-progress`, `research-don
 
 7. **Write the queue file** to:
    `thoughts/shared/handoffs/ralph-queue-YYYY-MM-DD_HH-MM-SS.json`
-   Use `spec_metadata` tool to get the current timestamp.
+   Run `bash opencode/scripts/spec_metadata.sh` to get the current timestamp.
 
 8. **Print the queue to the user**:
    ```
@@ -156,9 +156,9 @@ If stopping, jump to **WRAP-UP**.
    - Spawn parallel sub-agents: `codebase-locator`, `codebase-analyzer`, `codebase-pattern-finder`
    - If the task mentions web research, also spawn `web-search-researcher`
    - Wait for all sub-agents to complete
-7. Use `spec_metadata` tool to get metadata for the document
+7. Run `bash opencode/scripts/spec_metadata.sh` to get metadata for the document
 8. Write research document to `thoughts/shared/research/YYYY-MM-DD-TASK-XXX-description.md` using the standard research document format from `opencode/commands/research_codebase.md`
-9. Use `thoughts_sync` tool to commit and push
+9. Run `bash opencode/scripts/thoughts_sync.sh` to commit and push
 10. Update the task file: add the research doc path to `## Links`, set `status: research-done`
 
 ---
@@ -182,12 +182,12 @@ If stopping, jump to **WRAP-UP**.
    - `codebase-analyzer` — understand the current implementation
    - `codebase-pattern-finder` — find similar patterns to follow
    - `thoughts-analyzer` — extract key insights from any linked research documents
-8. Use `spec_metadata` tool to get metadata
+8. Run `bash opencode/scripts/spec_metadata.sh` to get metadata
 9. Write implementation plan to `thoughts/shared/plans/YYYY-MM-DD-TASK-XXX-description.md` using the plan structure from `opencode/commands/create_plan.md`:
    - Include: Overview, Current State Analysis, Desired End State, What We're NOT Doing, Implementation Approach, Phases with Success Criteria (automated + manual)
    - Every phase must have concrete file paths and specific changes
    - No open questions in the final plan — if something is unclear, add a note to the task file and mark the queue task `failed` with `"plan blocked: <question>"`
-10. Use `thoughts_sync` tool to commit and push
+10. Run `bash opencode/scripts/thoughts_sync.sh` to commit and push
 11. Update the task file: add the plan path to `## Links`, set `status: plan-ready`
 
 ---
@@ -253,7 +253,7 @@ Failed:
   - TASK-004 [plan] → "plan blocked: unclear whether to use REST or gRPC"
 ```
 
-Use `thoughts_sync` to sync the final queue state.
+Run `bash opencode/scripts/thoughts_sync.sh` to sync the final queue state.
 
 Use `TodoWrite` to mark all tasks completed/failed as appropriate.
 
